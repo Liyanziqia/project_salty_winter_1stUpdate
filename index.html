@@ -16,7 +16,7 @@
       /* ── PAGE BASE ────────────────────────────────────────────── */
       body {
         font-family: Georgia, 'Times New Roman', serif;
-        background-color: #5bc8f5;
+        background-color: #8fd6f4;
         color: #1a1a18;
         font-size: 18px;
         line-height: 1.65;
@@ -26,7 +26,7 @@
       .prose {
         max-width: 680px;
         margin: 0 auto;
-        padding: 0 20px;
+        padding-bottom: 2.5rem;
       }
 
 .scrolly-intro {
@@ -66,10 +66,11 @@
         margin-bottom: 2rem;
       }
 
+/* ── PROSE LINES & DIVIDERS ───────────────────────────────── */
       hr {
         border: none;
         border-top: 1px solid #c8c4bc;
-        margin: 2rem 0;
+        margin: 1rem 0; /* reduced top/bottom margin to balance surrounding padding */
       }
 
       /* ── INTRO IMAGE ──────────────────────────────────────────── */
@@ -120,7 +121,7 @@
         text-align: left;
         border-left: 4px solid #F2A7C3;
         border-radius: 0 4px 4px 0;
-        padding: 1rem 1.25rem;
+        padding: 1rem 1 rem;
         max-width: 520px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.07);
       }
@@ -244,18 +245,29 @@
 
   </head>
 
-  <body>
+<body>
 
+    <!-- Main Header Content -->
     <div class="prose">
       <h1>New York City spread half a million tons of road salt last winter</h1>
       <p class="dek">A decade of data shows the city is using more salt, especially the 2025–2026 season</p>
       <p>The NYC Department of Sanitation measures truck loads by volume rather than weight, with each standard salt spreader holding roughly 16 cubic yards. Each truck icon in the pictograms below represents 500 truckloads. Icon counts are rounded to the nearest whole icon.</p>
-     
     </div>
 
+    <!-- Wrapped First HR -->
+    <div class="prose">
+      <hr />
+    </div>
+
+    <!-- Image -->
     <img class="intro-image"
          src="images/anno0.png"
          alt="Truck pictogram showing NYC road salt usage in the 2025-26 season" />
+
+    <!-- Wrapped Second HR -->
+    <div class="prose">
+      <hr />
+    </div>
 
     <div class="prose">
       <p class="scrolly-intro">
@@ -288,18 +300,33 @@
           <p>By 2020–21, the city was using 453,763 tons, or about 25,464 truckloads. Salt use varied significantly year to year, mostly reflecting differences in winter severity rather than a straight upward trend.</p>
         </div>
 
-        <div class="step" id="step3" data-step="3">
+ <div class="step" id="step3" data-step="3">
           <p class="step-label">2025–2026 season</p>
           <h2>Second heaviest season on record</h2>
           <p>New York City spread 504,811 tons of road salt during the 2025–2026 winter, the highest amount in more than a decade and equivalent to roughly 28,328 truckloads. Department of Sanitation records show it fell just short of the 2014–2015 season.</p>
         </div>
 
-      </div>
-    </section>
+      </div> <!-- Closes .scrolly-overlay -->
+    </section> <!-- Closes #scrolly -->
+
+    <!-- Place prose sections OUTSIDE of #scrolly -->
+    <div class="prose">
+      <p> Precipitation type, sunlight, and storm frequency, among other factors, dictate how crews use road salt, the NYC Department of Sanitation said in a statement via email, explaining the data.
+        Modern winter operations prioritize rapid clearing to match current public expectations, 
+        delivering clear blacktop within hours rather than the weeks it took decades ago, 
+         the agency said. </p>        
+    </div>
+
+    <div class="intro-image">
+      <img src="images/barchart.png" style="max-width: 100%; height: auto;">
+    </div>
+  
+      
+     
 
     <div class="prose">
       <div class="methodology">
-        <h2>Methodology</h2>
+        <h2><strong>Methodology</strong></h2>
 
         <p><strong>Data source.</strong> Salt usage data comes from the NYC Department of Sanitation (DSNY) Salt Usage dataset, published on <a href="https://data.cityofnewyork.us/City-Government/DSNY-Salt-Usage/tavr-zknk/about_data">NYC Open Data</a>. The dataset was fetched directly via the Socrata API and covers 224 storm-level records from 2015–2016 through 2025–2026. Historical data as early as 1989 were provided by the department via email.</p>
 
