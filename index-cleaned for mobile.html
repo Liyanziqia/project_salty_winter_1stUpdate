@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <!--
+      viewport meta tag: tells mobile browsers NOT to zoom out and
+      shrink everything. "width=device-width" means use the phone's
+      actual screen width. "initial-scale=1" means start at 100% zoom.
+      Without this line, mobile browsers render as if the screen were
+      ~980px wide and everything looks tiny.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    
+    <style>
+
+      /* ──  RESET ──────────────────────────────────────────────────
+         Remove default browser margin/padding to control all spacing.
+         box-sizing: border-box means padding is included in width totals,
+         which makes layout math much easier.
+      ─────────────────────────────────────────────────────────────────── */
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* ── PAGE BASE ─────────────────────────────────────────────────────
+         Set the overall page font, background, and text color.
+         font-size: 18px on body means all rem units scale from here.
+      ─────────────────────────────────────────────────────────────────── */
+      body {
+        font-family: Georgia, 'Times New Roman', serif;
+        background-color: #5bc8f5;
+        color: #1a1a18;
+        font-size: 18px;
+        line-height: 1.65;
+      }
+
+      /* ── HEADER / PROSE BLOCKS ─────────────────────────────────────────
+         max-width keeps lines from stretching too wide on big screens.
+         On mobile (narrow screens) it naturally fills the width.
+         padding adds breathing room on the sides so text doesn't
+         touch the edge of the phone screen.
+      ─────────────────────────────────────────────────────────────────── */
+      .prose {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 0 20px;
+        /* Intro paragraph before the scrolly section */
+.scrolly-intro {
+  margin: 0 0 3rem 0;
+}
+      }
+
+      h1 {
+        font-size: clamp(24px, 5vw, 40px);
+        /* clamp(min, preferred, max): responsive font size that grows
+           with viewport width but stays within the min/max bounds */
+        font-weight: normal;
+        line-height: 1.2;
+        margin: 3rem 0 1rem;
+      }
+
+      h1 em {
+        font-style: normal;
+        color: #1f73a7;
+      }
+
+      .eyebrow {
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #1f73a7;
+        margin: 3rem 0 0.5rem;
+      }
+
+      .dek {
+        font-size: clamp(16px, 2.5vw, 20px);
+        color: #444440;
+        margin: 0.75rem 0 0.5rem;
+      }
+
+      .byline {
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+        color: #888880;
+        margin-bottom: 2rem;
+      }
+
+      hr {
+        border: none;
+        border-top: 1px solid #c8c4bc;
+        margin: 2rem 0;
+      }
+
+      /* ── INTRO IMAGE ───────────────────────────────────────────────────
+         The anno0 image sits above the scrolly section as a plain image.
+         100% width on mobile, capped at 680px on wide screens.
+      ─────────────────────────────────────────────────────────────────── */
+      .intro-image {
+        display: block;
+        width: 100%;
+        max-width: 680px;
+        margin: 0 auto 2.5rem auto;
+        padding: 0 20px;
+      }
+
+      /* ── SCROLLAMA SECTION ─────────────────────────────────────────────
+         #scrolly is the wrapper for the whole sticky + steps layout.
+         On MOBILE: stacks vertically (image on top, text below).
+         On DESKTOP (min-width: 700px): side-by-side columns.
+      ─────────────────────────────────────────────────────────────────── */
+      #scrolly {
+        position: relative;
+        padding: 0 1rem;
+      }
+
+      /* ── STICKY GRAPHIC (the image panel) ─────────────────────────────
+         On mobile: NOT sticky — just sits in the normal document flow
+         above the text steps so readers can see image then text.
+         position: sticky is applied only at ≥700px (see media query).
+      ─────────────────────────────────────────────────────────────────── */
+      .sticky-thing {
+        width: 100%;
+        margin: 0;
+        z-index: 0;
+      }
+
+      #zoomBox {
+        overflow: clip;
+        width: 100%;
+      }
+
+      /* the chart image — full width on mobile */
+      .photoDiv {
+        width: 100%;
+        display: block;
+        transition: opacity 0.3s ease;
+        /* subtle fade when image swaps — feels less abrupt */
+      }
+
+      /* ── SCROLLY TEXT STEPS ────────────────────────────────────────────
+         Each .step is a text panel. On mobile they stack below the image.
+         margin-bottom controls how far the reader scrolls between steps.
+         Reduce from the original 25rem to something that works on mobile.
+      ─────────────────────────────────────────────────────────────────── */
+      .scrolly-overlay {
+        position: relative;
+        padding: 0;
+        width: 100%;
+      }
+
+      .step {
+        margin: 1rem auto 8rem auto;
+        /* 8rem gap between steps on mobile — enough to scroll,
+           not so much the reader loses context */
+        background-color: #fff;
+        color: #1a1a18;
+        text-align: left;
+        border-left: 4px solid #F2A7C3;
+        /* pink left border replaces the red debug border from the template */
+        border-radius: 0 4px 4px 0;
+        padding: 1rem 1.25rem;
+        max-width: 520px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      }
+
+      .step p {
+        font-size: 1rem;
+        line-height: 1.6;
+        font-family: Georgia, serif;
+      }
+
+      .step-label {
+        font-family: 'Courier New', monospace;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #1f73a7;
+        margin-bottom: 0.4rem;
+      }
+
+      .step h2 {
+        font-size: clamp(18px, 3vw, 22px);
+        font-weight: normal;
+        line-height: 1.3;
+        margin-bottom: 0.6rem;
+      }
+
+      /* highlight the active step heading in teal */
+      .step.is-active h2 {
+        color: #1f73a7;
+      }
+
+      /* ── METHODOLOGY SECTION ───────────────────────────────────────────
+         Plain prose section below the scrolly.
+         Uses the same .prose container for consistent max-width.
+      ─────────────────────────────────────────────────────────────────── */
+      .methodology {
+        margin: 3rem 0 1rem;
+      }
+
+      .methodology h2 {
+        font-size: 20px;
+        font-weight: normal;
+        color: #1f73a7;
+        margin-bottom: 0.75rem;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .methodology p {
+        font-size: 16px;
+        color: #444440;
+        margin-bottom: 1rem;
+        line-height: 1.7;
+      }
+
+      .methodology ul {
+        font-size: 16px;
+        color: #444440;
+        padding-left: 1.4rem;
+        margin-bottom: 1rem;
+        line-height: 1.7;
+      }
+
+      /* ── FOOTER ────────────────────────────────────────────────────────
+         Methodology, source note and byline at the bottom of the page.
+      ─────────────────────────────────────────────────────────────────── */
+      footer {
+        margin: 3rem 0 4rem;
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+        color: #0a0909;
+        border-top: 1px ;
+        padding-top: 1 rem;
+      }
+
+      /* ── DESKTOP LAYOUT (≥700px) ───────────────────────────────────────
+         At wider screens, switch to the classic scrollytelling layout:
+         sticky image on the RIGHT, scrolling text on the LEFT.
+
+         How it works:
+         - #scrolly becomes a flex row
+         - .scrolly-overlay (text) gets order:0 → appears on the left
+         - .sticky-thing (image) gets order:1, flex-grow:2 → right, larger
+         - .sticky-thing gets position:sticky so it stays on screen
+           while the text steps scroll past it
+      ─────────────────────────────────────────────────────────────────── */
+      @media only screen and (min-width: 700px) {
+
+        #scrolly {
+          display: flex;
+          align-items: flex-start;
+          gap: 1rem;
+        }
+
+        #scrolly > div {
+          flex-basis: 0;
+          flex-grow: 1;
+          flex-shrink: 1;
+          padding: 0.75em;
+        }
+
+        .scrolly-overlay {
+          /* text panel — left side */
+          order: 0;
+          min-width: 15rem;
+          max-width: 20rem;
+          margin-top: 70vh;
+          /* push text down so the image is visible before reader scrolls */
+        }
+
+        .sticky-thing {
+          /* image panel — right side, STICKY */
+          order: 1;
+          flex-grow: 2;
+          position: sticky;
+          top: 0;
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        #zoomBox {
+          /* on desktop, image sits in the right column with left offset */
+          overflow: clip;
+          margin-left: 0;
+          max-width: 100%;
+          max-height: none;
+        }
+
+        .step {
+          margin-bottom: 25rem;
+          /* more space between steps on desktop because the
+             sticky image needs time to "hold" while reader scrolls */
+        }
+      }
+
+      /* ── ACCESSIBILITY ─────────────────────────────────────────────────
+         Respect the user's preference for reduced motion —
+         some people get motion sickness from transitions.
+      ─────────────────────────────────────────────────────────────────── */
+      @media (prefers-reduced-motion: reduce) {
+        .photoDiv { transition: none; }
+      }
+
+    </style>
+
+    <!--
+      Three external scripts loaded from CDNs (content delivery networks).
+       load them in <head> so they're ready before the page renders.
+
+      1. intersection-observer: a polyfill so scrollama works in older browsers
+      2. scrollama: the scroll-trigger library
+      3. d3: a data visualization library — used here just for its
+         convenient d3.select() DOM helper to swap image sources
+    -->
+    <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.0.4/scrollama.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.3.0/d3.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- ── HEADER ──────────────────────────────────────────────────────────
+         All header text lives inside .prose so it stays centered and
+         has consistent side padding on mobile.
+    ─────────────────────────────────────────────────────────────────────── -->
+    <div class="prose">
+     
+      <h1>New York City spread half a million tons of road salt last winter</h1>
+      <p class="dek">A decade of data shows the city is  using more salt, especially the 2025–2026 season </p>
+   <p>The NYC Department of Sanitation measures truck loads by volume rather than weight, with each standard salt spreaders holding roughly 16 cubic yards. Each truck icon in the pictograms below represents 500 truckloads. Icon counts are rounded to the nearest whole icon.
+    
+      <hr />
+    </div>
+
+    <!-- ── INTRO IMAGE ──────────────────────────────────────────────────────
+         anno0 sits here as a plain <img> — completely outside the scrolly
+         section. No JavaScript needed. It just displays like any image
+         on a webpage. On mobile it fills the screen width; on desktop
+         it's capped at 680px and centered.
+    ─────────────────────────────────────────────────────────────────────── -->
+    <img class="intro-image"
+         src="images/anno0.png"
+         alt="Truck pictogram showing NYC road salt usage in the 2025-26 season" />
+
+     <!-- fixed scrolly intro line by creating its own div!!! -->        
+<div class="prose">
+  <p class="scrolly-intro">
+    Here is how the city's salt use has stacked up over the past decade:
+  </p>
+</div>
+
+    <!-- ── SCROLLAMA SECTION ───────────────────────────────────────────────
+         This is where the scroll-driven storytelling happens.
+
+         Structure:
+           .sticky-thing  → holds the image that updates as you scroll
+           .scrolly-overlay → holds the text steps that trigger the updates
+
+         On mobile: these stack vertically (image above, text below).
+         On desktop: side by side (text left, image right / sticky).
+    ─────────────────────────────────────────────────────────────────────── -->
+   
+    <section id="scrolly">
+
+      <!-- LEFT on desktop / TOP on mobile: the sticky image -->
+      <div class="sticky-thing">
+        <div id="zoomBox">
+
+          <!--
+            This single <img> element is what changes throughout the story.
+            id="scrollyPhoto" is how JavaScript finds and updates it.
+            src starts on anno1.png (anno0 is already shown above).
+            alt text is important for screen readers and accessibility.
+          -->
+          <img id="scrollyPhoto"
+               class="photoDiv"
+               src="images/anno1.png"
+               alt="Truck pictogram showing NYC road salt usage by season" />
+
+        </div>
+      </div>
+
+      <!-- RIGHT on desktop / BELOW on mobile: the scrolling text steps -->
+      <div class="scrolly-overlay">
+
+        <!--
+          Each .step div is one "chapter" of the story.
+          data-step attribute isn't used here but is good practice —
+          it lets you reference the step number in JavaScript if needed.
+
+          When a step scrolls to the middle of the screen, scrollama
+          fires the 'stepin' event, which triggers the image swap below.
+        -->
+
+        <div class="step" id="step1" data-step="1">
+          <p class="step-label">2015–2016 season</p>
+          <h2>A relatively light winter </h2>
+          <p> New York City spread 266,265 tons of road salt across its streets. That requires an estimated 14,942 truckloads of rock salt, using DSNY's standard salt spreaders.</p>
+        </div>
+
+        <div class="step" id="step2" data-step="2">
+          <p class="step-label">2020–2021 season</p>
+          <h2>Salt use jumps nearly 70% in five years</h2>
+          <p>By 2020–21, the city was using 453,763 tons, or about 25,464 truckloads. Salt use varied significantly year to year, mostly reflecting differences in winter severity rather than a straight upward trend.</p>
+        </div>
+
+        <div class="step" id="step3" data-step="3">
+          <p class="step-label">2025–2026 season</p>
+          <h2>Second heaviest season on record</h2>
+          <p>New York City spread 504,811 tons of road salt during the 2025–2026 winter, the highest amount in more than a decade and equivalent to roughly 28,328 truckloads. Department of Sanitation records show it fell just short of the 2014–2015 season.</p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ── METHODOLOGY ──────────────────────────────────────────────────────
+         Plain prose below the scrolly section.
+         Describes how the data was collected, cleaned, and verified.
+         This is standard practice in data journalism.
+    ─────────────────────────────────────────────────────────────────────── -->
+    <div class="prose">
+      <div class="methodology">
+        <h2>Methodology</h2>
+
+        <p><strong>Data source.</strong> Salt usage data comes from the NYC Department of Sanitation (DSNY) Salt Usage dataset, published on <a href="https://data.cityofnewyork.us/City-Government/DSNY-Salt-Usage/tavr-zknk/about_data">NYC Open Data</a>. The dataset was fetched directly via the Socrata API and covers 224 storm-level records from 2015–2016 through 2025–2026. Historical data as early as 1989 were provided by the department via email. </p>
+
+        <p><strong>Defining winter seasons.</strong> Each record in the dataset carries a date. The key cleaning decision was how to assign dates that fall in late spring to the correct winter season, specifically one April storm. Following guidance from DSNY's research team, the rule applied was: storms occurring in January through April are assigned to the season that started the prior October. This corrects an error in an earlier version of this analysis, in which an April 4, 2018 storm (13,666 tons) was incorrectly assigned to 2018–19 instead of 2017–18.</p>
+
+        <p><strong>Truckload calculations.</strong> Truckloads were calculated using conversion parameters provided by the DSNY research team, who noted that DSNY measures salt by volume, not weight:</p>
+        <ul>
+          <li>Salt density: roughly <strong>1.08 tons per cubic yard</strong></li>
+          <li>Standard DSNY salt spreader capacity: about <strong>16 cubic yards</strong></li>
+          <li>Formula: total tons ÷ 1.08 = cubic yards; cubic yards ÷ 16 = spreader loads</li>
+        </ul>
+        <p>DSNY also operates larger "flow-and-dump" trucks (~17 cu. yd) and smaller Haulster pick-up trucks (~2.5–4 cu. yd). The truckload figures in this story use the standard spreader as the unit for consistency. Truckload counts are estimates.</p>
+
+        <p><strong>Data verification.</strong> Season totals were submitted to DSNY's research team for verification in June 2026. The team confirmed that all season totals are correct, with the exception of the corrected 2017–18 and 2018–19 figures noted above. The team also noted that salt use is not a direct reflection of snowfall inches — variation depends on precipitation type, temperature, sunlight, and the spacing between storms.</p>
+
+        <p><strong>Pictogram icons.</strong> Each truck icon in the pictograms represents 500 truckloads. Icon counts are rounded to the nearest whole icon. The truck illustration was drawn by the author in Adobe Illustrator.</p>
+
+      </div>
+      <hr />
+      <footer>
+       <p> Source: NYC Department of Sanitation (DSNY) Salt Usage dataset, NYC Open Data  </p>
+       <p>    Data verified with DSNY research team in July 2026  </p>    
+       <p>   View the code for this project on GitHub
+        <a href="https://github.com/Liyanziqia/project_salty_winter_1stUpdate">here</a> </p> 
+           <p>  Analysis and design: Liyan Qi  </p>   
+      </footer>
+    </div>
+
+
+    <!-- ── JAVASCRIPT: IMAGE SWAP LOGIC ────────────────────────────────────
+         This script listens for scrollama's 'stepin' event on each step
+         and swaps the src of #scrollyPhoto to the matching image.
+
+         d3.select() is a convenient way to find an element and change it.
+         .attr("src", "images/anno2.png") sets the src attribute,
+         which tells the browser to load and display a new image.
+
+         The image filenames must match exactly what's in your images/ folder.
+    ─────────────────────────────────────────────────────────────────────── -->
+    <script>
+
+      // Step 1 → show the 2015-16 season pictogram
+      d3.select("#step1").on('stepin', function(e) {
+        d3.select("#scrollyPhoto").attr("src", "images/anno1.png");
+      });
+
+      // Step 2 → show the 2020-21 season pictogram
+      d3.select("#step2").on('stepin', function(e) {
+        d3.select("#scrollyPhoto").attr("src", "images/anno2.png");
+      });
+
+      // Step 3 → show the 2025-26 season pictogram
+      d3.select("#step3").on('stepin', function(e) {
+        d3.select("#scrollyPhoto").attr("src", "images/anno3.png");
+      });
+
+    </script>
+
+
+    <!-- ── JAVASCRIPT: SCROLLAMA SETUP ─────────────────────────────────────
+         This block initializes scrollama and tells it which elements to watch.
+
+         .setup() configuration:
+           step:   CSS selector for the elements scrollama watches
+           offset: 0.5 means trigger when the step is 50% into the viewport
+                   (i.e. when the middle of the screen hits the step)
+           debug:  set to true to show a horizontal line at the trigger point
+                   — very useful when building, remove before publishing
+
+         .onStepEnter fires when a step scrolls IN to the trigger point.
+         .onStepExit  fires when a step scrolls OUT of the trigger point.
+
+         Both dispatch a custom browser event ('stepin' / 'stepout') on the
+         step element, which the d3 listeners above then catch and respond to.
+    ─────────────────────────────────────────────────────────────────────── -->
+    <script>
+      const scroller = scrollama();
+
+      scroller
+        .setup({
+          step: "#scrolly .scrolly-overlay .step",
+          offset: 0.5,
+          debug: false
+        })
+        .onStepEnter(function({ element, index, direction }) {
+          // add is-active class to current step (turns heading teal)
+          document.querySelectorAll(".step").forEach(function(el) {
+            el.classList.remove("is-active");
+          });
+          element.classList.add("is-active");
+
+          // fire the stepin event so the d3 listeners above can catch it
+          const event = new CustomEvent('stepin', { detail: { direction: direction } });
+          element.dispatchEvent(event);
+        })
+        .onStepExit(function({ element, index, direction }) {
+          const event = new CustomEvent('stepout', { detail: { direction: direction } });
+          element.dispatchEvent(event);
+        });
+
+      // recalculate scrollama's trigger positions when the window resizes
+      // (important on mobile when the address bar shows/hides)
+      window.addEventListener("resize", scroller.resize);
+    </script>
+
+  </body>
+</html>

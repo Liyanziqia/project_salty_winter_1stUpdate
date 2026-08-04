@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+
+      /* ── RESET ────────────────────────────────────────────────── */
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* ── PAGE BASE ────────────────────────────────────────────── */
+      body {
+        font-family: Georgia, 'Times New Roman', serif;
+        background-color: #5bc8f5;
+        color: #1a1a18;
+        font-size: 18px;
+        line-height: 1.65;
+      }
+
+      /* ── HEADER / PROSE BLOCKS ────────────────────────────────── */
+      .prose {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .scrolly-intro {
+        margin: 0 0 3rem 0;
+      }
+
+      h1 {
+        font-size: clamp(24px, 5vw, 40px);
+        font-weight: normal;
+        line-height: 1.2;
+        margin: 3rem 0 1rem;
+      }
+
+      h1 em {
+        font-style: normal;
+        color: #1f73a7;
+      }
+
+      .eyebrow {
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #1f73a7;
+        margin: 3rem 0 0.5rem;
+      }
+
+      .dek {
+        font-size: clamp(16px, 2.5vw, 20px);
+        color: #444440;
+        margin: 0.75rem 0 0.5rem;
+      }
+
+      .byline {
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+        color: #888880;
+        margin-bottom: 2rem;
+      }
+
+      hr {
+        border: none;
+        border-top: 1px solid #c8c4bc;
+        margin: 2rem 0;
+      }
+
+      /* ── INTRO IMAGE ──────────────────────────────────────────── */
+      .intro-image {
+        display: block;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto 2.5rem auto;
+        padding: 0 20px;
+      }
+
+      /* ── SCROLLAMA SECTION ────────────────────────────────────── */
+      #scrolly {
+        position: relative;
+        padding: 0 1rem;
+      }
+
+      .sticky-thing {
+        width: 100%;
+        margin: 0;
+        z-index: 0;
+      }
+
+      #zoomBox {
+        overflow: clip;
+        width: 100%;
+      }
+
+      .photoDiv {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        display: block;
+        transition: opacity 0.3s ease;
+      }
+
+      /* ── SCROLLY TEXT STEPS ───────────────────────────────────── */
+      .scrolly-overlay {
+        position: relative;
+        padding: 0;
+        width: 100%;
+      }
+
+      .step {
+        margin: 1rem auto 8rem auto;
+        background-color: #fff;
+        color: #1a1a18;
+        text-align: left;
+        border-left: 4px solid #F2A7C3;
+        border-radius: 0 4px 4px 0;
+        padding: 1rem 1.25rem;
+        max-width: 520px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      }
+
+      .step p {
+        font-size: 1rem;
+        line-height: 1.6;
+        font-family: Georgia, serif;
+      }
+
+      .step-label {
+        font-family: 'Courier New', monospace;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #1f73a7;
+        margin-bottom: 0.4rem;
+      }
+
+      .step h2 {
+        font-size: clamp(18px, 3vw, 22px);
+        font-weight: normal;
+        line-height: 1.3;
+        margin-bottom: 0.6rem;
+      }
+
+      .step.is-active h2 {
+        color: #1f73a7;
+      }
+
+      /* ── METHODOLOGY SECTION ─────────────────────────────────── */
+      .methodology {
+        margin: 3rem 0 1rem;
+      }
+
+      .methodology h2 {
+        font-size: 20px;
+        font-weight: normal;
+        color: #1f73a7;
+        margin-bottom: 0.75rem;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .methodology p, .methodology ul {
+        font-size: 16px;
+        color: #444440;
+        margin-bottom: 1rem;
+        line-height: 1.7;
+      }
+
+      .methodology ul {
+        padding-left: 1.4rem;
+      }
+
+      /* ── FOOTER ──────────────────────────────────────────────── */
+      footer {
+        margin: 3rem 0 4rem;
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+        color: #0a0909;
+        border-top: 1px solid #c8c4bc;
+        padding-top: 1rem;
+      }
+
+      /* ── DESKTOP LAYOUT (≥700px) ─────────────────────────────── */
+      @media only screen and (min-width: 700px) {
+
+        #scrolly {
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          gap: 1.5rem;
+          max-width: 950px;
+          margin: 0 auto;
+        }
+
+        .scrolly-overlay {
+          order: 0;
+          flex: 0 0 380px;
+          margin-top: 70vh;
+          padding-left: 1rem;
+        }
+
+        .sticky-thing {
+          order: 1;
+          flex: 1;
+          position: sticky;
+          top: 0;
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        #zoomBox {
+          overflow: clip;
+          margin-left: 0;
+          max-width: 100%;
+          max-height: none;
+        }
+
+        .step {
+          max-width: 100%;
+          padding: 0.75rem 1.25rem;
+          margin-bottom: 25rem;
+        }
+      }
+
+      /* ── ACCESSIBILITY ───────────────────────────────────────── */
+      @media (prefers-reduced-motion: reduce) {
+        .photoDiv { transition: none; }
+      }
+
+    </style>
+
+    <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.0.4/scrollama.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.3.0/d3.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="prose">
+      <h1>New York City spread half a million tons of road salt last winter</h1>
+      <p class="dek">A decade of data shows the city is using more salt, especially the 2025–2026 season</p>
+      <p>The NYC Department of Sanitation measures truck loads by volume rather than weight, with each standard salt spreader holding roughly 16 cubic yards. Each truck icon in the pictograms below represents 500 truckloads. Icon counts are rounded to the nearest whole icon.</p>
+      <hr />
+    </div>
+
+    <img class="intro-image"
+         src="images/anno0.png"
+         alt="Truck pictogram showing NYC road salt usage in the 2025-26 season" />
+
+    <div class="prose">
+      <p class="scrolly-intro">
+        Here is how the city's salt use has stacked up over the past decade:
+      </p>
+    </div>
+
+    <section id="scrolly">
+
+      <div class="sticky-thing">
+        <div id="zoomBox">
+          <img id="scrollyPhoto"
+               class="photoDiv"
+               src="images/anno1.png"
+               alt="Truck pictogram showing NYC road salt usage by season" />
+        </div>
+      </div>
+
+      <div class="scrolly-overlay">
+
+        <div class="step" id="step1" data-step="1">
+          <p class="step-label">2015–2016 season</p>
+          <h2>A relatively light winter</h2>
+          <p>New York City spread 266,265 tons of road salt across its streets. That requires an estimated 14,942 truckloads of rock salt, using DSNY's standard salt spreaders.</p>
+        </div>
+
+        <div class="step" id="step2" data-step="2">
+          <p class="step-label">2020–2021 season</p>
+          <h2>Salt use jumps nearly 70% in five years</h2>
+          <p>By 2020–21, the city was using 453,763 tons, or about 25,464 truckloads. Salt use varied significantly year to year, mostly reflecting differences in winter severity rather than a straight upward trend.</p>
+        </div>
+
+        <div class="step" id="step3" data-step="3">
+          <p class="step-label">2025–2026 season</p>
+          <h2>Second heaviest season on record</h2>
+          <p>New York City spread 504,811 tons of road salt during the 2025–2026 winter, the highest amount in more than a decade and equivalent to roughly 28,328 truckloads. Department of Sanitation records show it fell just short of the 2014–2015 season.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="prose">
+      <div class="methodology">
+        <h2>Methodology</h2>
+
+        <p><strong>Data source.</strong> Salt usage data comes from the NYC Department of Sanitation (DSNY) Salt Usage dataset, published on <a href="https://data.cityofnewyork.us/City-Government/DSNY-Salt-Usage/tavr-zknk/about_data">NYC Open Data</a>. The dataset was fetched directly via the Socrata API and covers 224 storm-level records from 2015–2016 through 2025–2026. Historical data as early as 1989 were provided by the department via email.</p>
+
+        <p><strong>Defining winter seasons.</strong> Each record in the dataset carries a date. The key cleaning decision was how to assign dates that fall in late spring to the correct winter season, specifically one April storm. Following guidance from DSNY's research team, the rule applied was: storms occurring in January through April are assigned to the season that started the prior October. This corrects an error in an earlier version of this analysis, in which an April 4, 2018 storm (13,666 tons) was incorrectly assigned to 2018–19 instead of 2017–18.</p>
+
+        <p><strong>Truckload calculations.</strong> Truckloads were calculated using conversion parameters provided by the DSNY research team, who noted that DSNY measures salt by volume, not weight:</p>
+        <ul>
+          <li>Salt density: roughly <strong>1.08 tons per cubic yard</strong></li>
+          <li>Standard DSNY salt spreader capacity: about <strong>16 cubic yards</strong></li>
+          <li>Formula: total tons ÷ 1.08 = cubic yards; cubic yards ÷ 16 = spreader loads</li>
+        </ul>
+        <p>DSNY also operates larger "flow-and-dump" trucks (~17 cu. yd) and smaller Haulster pick-up trucks (~2.5–4 cu. yd). The truckload figures in this story use the standard spreader as the unit for consistency. Truckload counts are estimates.</p>
+
+        <p><strong>Data verification.</strong> Season totals were submitted to DSNY's research team for verification in June 2026. The team confirmed that all season totals are correct, with the exception of the corrected 2017–18 and 2018–19 figures noted above. The team also noted that salt use is not a direct reflection of snowfall inches — variation depends on precipitation type, temperature, sunlight, and the spacing between storms.</p>
+
+        <p><strong>Pictogram icons.</strong> Each truck icon in the pictograms represents 500 truckloads. Icon counts are rounded to the nearest whole icon. The truck illustration was drawn by the author in Adobe Illustrator.</p>
+
+      </div>
+      <hr />
+      <footer>
+        <p>Source: NYC Department of Sanitation (DSNY) Salt Usage dataset, NYC Open Data</p>
+        <p>Data verified with DSNY research team in July 2026</p>    
+        <p>View the code for this project on GitHub <a href="https://github.com/Liyanziqia/project_salty_winter_1stUpdate">here</a></p> 
+        <p>Analysis and design: Liyan Qi</p>   
+      </footer>
+    </div>
+
+    <script>
+      d3.select("#step1").on('stepin', function(e) {
+        d3.select("#scrollyPhoto").attr("src", "images/anno1.png");
+      });
+
+      d3.select("#step2").on('stepin', function(e) {
+        d3.select("#scrollyPhoto").attr("src", "images/anno2.png");
+      });
+
+      d3.select("#step3").on('stepin', function(e) {
+        d3.select("#scrollyPhoto").attr("src", "images/anno3.png");
+      });
+    </script>
+
+    <script>
+      const scroller = scrollama();
+
+      scroller
+        .setup({
+          step: "#scrolly .scrolly-overlay .step",
+          offset: 0.5,
+          debug: false
+        })
+        .onStepEnter(function({ element, index, direction }) {
+          document.querySelectorAll(".step").forEach(function(el) {
+            el.classList.remove("is-active");
+          });
+          element.classList.add("is-active");
+
+          const event = new CustomEvent('stepin', { detail: { direction: direction } });
+          element.dispatchEvent(event);
+        })
+        .onStepExit(function({ element, index, direction }) {
+          const event = new CustomEvent('stepout', { detail: { direction: direction } });
+          element.dispatchEvent(event);
+        });
+
+      window.addEventListener("resize", scroller.resize);
+    </script>
+
+  </body>
+</html>
