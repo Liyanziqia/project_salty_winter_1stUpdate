@@ -2,14 +2,16 @@ Project summary: Salty Winter (1st Update):
 
 An updated data journalism and visualization project analyzing road salt usage across New York City over the past decade, with correct data and measurements following data check.
 
-Original Repository: project_salty_winter 
-(https://github.com/Liyanziqia/project_salty_winter)
-
 Update Repository: project_salty_winter_1stUpdate
-Program: Lede Program, Columbia University
+Read the updated story here: https://liyanziqia.github.io/project_salty_winter_1stUpdate/
 
+This is a project for the Lede Program at Columbia University
 Original Due Date: June 28, 2026. 
 First Update Date: August 3, 2026.  
+
+Original Repository: project_salty_winter 
+https://github.com/Liyanziqia/project_salty_winter
+
 
 ##
 Project Updates & Data Corrections:
