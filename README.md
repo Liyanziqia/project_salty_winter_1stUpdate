@@ -34,7 +34,7 @@ Methodology & WorkflowData Acquisition:
 
 Fetched 224 storm-level records covering 2015–2016 through 2025–2026 directly from the NYC Department of Sanitation (DSNY) Salt Usage dataset via the Socrata API (tavr-zknk).  
 
-Archived raw API output as df_salt_raw.csv.  .Data Cleaning & Type Casting:Parsed date_of_report strings to Pandas datetime objects.  
+Archived raw API output as df_salt_raw.csv. Data Cleaning & Type Casting:Parsed date_of_report strings to Pandas datetime objects.  
 
 Converted total_tons from text strings to numeric values (pd.to_numeric).  
 
