@@ -22,9 +22,11 @@ Following feedback and consultation with the research team at the NYC Department
 
 This caused late-spring storms (such as an April 4, 2018 storm totaling 13,666 tons) to be misassigned to the 2018–2019 season instead of the 2017–2018 season.  
 
-The Correction: DSNY defines a winter season as running continuously from autumn through spring.  . Following guidance from DSNY, storms occurring from January through April are assigned to the season starting the prior October.  
+The Correction: DSNY defines a winter season as running continuously from autumn through spring.  Following guidance from DSNY, storms occurring from January through April are assigned to the season starting the prior October.  
 
-2. Salt Volume vs. Weight CalculationsInitial Assumption: 
+Double checked data analysis, specifically salt use by winter seasons,  using R. 
+
+2. Salt Volume vs. Weight Calculations Initial Assumption: 
 Early visualizations assumed standard DSNY salt spreader trucks carry roughly 22 tons of salt per load.  
 The Correction: DSNY measures salt loads by volume (cubic yards) rather than direct weight. 
 Using parameters provided by the DSNY research team, total truckloads are now calculated using bulk density and spreader capacities.  
